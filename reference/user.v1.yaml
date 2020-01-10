@@ -85,7 +85,7 @@ paths:
                 - password
         description: ''
       tags:
-        - login
+        - ユーザー認証
   /change_password:
     post:
       summary: パスワード変更
@@ -125,12 +125,12 @@ paths:
                 - new_password
         description: ''
       tags:
-        - login
+        - ユーザー認証
   /reset_password:
     post:
       summary: パスワードリセット
       tags:
-        - login
+        - ユーザー認証
       responses:
         '200':
           description: OK
@@ -213,7 +213,7 @@ paths:
       security:
         - Authorization: []
       tags:
-        - facility
+        - 施設関連
 components:
   schemas: {}
   securitySchemes:
@@ -222,7 +222,7 @@ components:
       type: apiKey
       in: header
 tags:
-  - name: login
+  - name: ユーザー認証
     description: ユーザーログインに関わるAPI
-  - name: facility
+  - name: 施設関連
     description: 施設関連
