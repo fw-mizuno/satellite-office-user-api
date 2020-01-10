@@ -55,11 +55,11 @@ paths:
                 is_unauth_user:
                   value: true
         '400':
-            description: Bad Request
-            content:
-              application/json:
-                schema:
-                  $ref: ../models/error.v1.yaml
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
         '500':
           description: Internal Server Error
           content:
@@ -158,6 +158,59 @@ paths:
                   type: string
               required:
                 - email
+      security:
+        - Authorization: []
+  /areas:
+    get:
+      summary: エリア一覧取得
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: エリアリスト
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: エリアID
+                    name:
+                      type: string
+                      description: エリア名
+                    stations:
+                      type: array
+                      description: エリア内の駅リスト
+                      items:
+                        type: object
+                        description: ''
+                        properties:
+                          id:
+                            type: string
+                            description: 駅ID
+                          name:
+                            type: string
+                            description: 駅名
+                  required:
+                    - id
+                    - name
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: get-areas
+      description: エリア一覧を取得する
       security:
         - Authorization: []
 components:
