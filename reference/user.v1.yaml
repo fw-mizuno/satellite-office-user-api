@@ -8,7 +8,7 @@ info:
     User向けAPI
     認証はCognitoが発行したJWT Tokenを利用する
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'https://satellite-office-app.herokuapp.com'
 paths:
   /login:
     post:
