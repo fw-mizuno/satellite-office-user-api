@@ -8,11 +8,11 @@ info:
     User向けAPI
     認証はCognitoが発行したJWT Tokenを利用する
 servers:
-  - url: 'https://satellite-office-app.herokuapp.com'
+  - url: 'https://satellite-office-app.herokuapp.com/api/v1'
 paths:
   /login:
     post:
-      summary: login
+      summary: ログイン
       responses:
         '200':
           description: OK
@@ -88,7 +88,7 @@ paths:
         - login
   /change_password:
     post:
-      summary: change_password
+      summary: パスワード変更
       responses:
         '200':
           description: OK
@@ -163,7 +163,6 @@ paths:
   /areas:
     get:
       summary: エリア一覧取得
-      tags: []
       responses:
         '200':
           description: OK
@@ -213,6 +212,8 @@ paths:
       description: エリア一覧を取得する
       security:
         - Authorization: []
+      tags:
+        - facility
 components:
   schemas: {}
   securitySchemes:
@@ -223,3 +224,5 @@ components:
 tags:
   - name: login
     description: ユーザーログインに関わるAPI
+  - name: facility
+    description: 施設関連
