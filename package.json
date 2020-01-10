@@ -1,5 +1,5 @@
 {
-  "name": "enarpa-api",
+  "name": "satellite-api",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/fw-mizuno/satellite-office-user-api.git",
