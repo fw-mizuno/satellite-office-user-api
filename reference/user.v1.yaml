@@ -105,7 +105,7 @@ paths:
       operationId: post-change_password
       description: パスワード変更を行う。初回パスワード設定も
       security:
-        - Authorization: []
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -157,7 +157,7 @@ paths:
               required:
                 - email
       security:
-        - Authorization: []
+        - bearerAuth: []
   /areas:
     get:
       summary: エリア一覧取得
@@ -167,33 +167,59 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                description: エリアリスト
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: エリアID
-                    name:
-                      type: string
-                      description: エリア名
-                    stations:
-                      type: array
-                      description: エリア内の駅リスト
-                      items:
-                        type: object
-                        description: ''
-                        properties:
-                          id:
-                            type: string
-                            description: 駅ID
-                          name:
-                            type: string
-                            description: 駅名
-                  required:
-                    - id
-                    - name
+                type: object
+                description: エリア一覧
+                properties:
+                  areas:
+                    type: array
+                    description: エリアリスト
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: エリアID
+                        name:
+                          type: string
+                          description: エリア名
+                        stations:
+                          type: array
+                          description: エリア内の駅リスト
+                          items:
+                            type: object
+                            description: ''
+                            properties:
+                              id:
+                                type: string
+                                description: 駅ID
+                              name:
+                                type: string
+                                description: 駅名
+                            required:
+                              - id
+                              - name
+              examples:
+                example:
+                  value:
+                    areas:
+                      - id: 1
+                        name: 品川
+                        stations:
+                          - id: 1
+                            name: 品川駅
+                          - id: 2
+                            name: 北品川駅
+                          - id: 3
+                            name: 高輪台駅
+                      - id: 2
+                        name: 渋谷
+                        stations:
+                          - id: 1
+                            name: 品川駅
+                          - id: 2
+                            name: 神泉駅
+                          - id: 3
+                            name: 代官山駅
         '400':
           description: Bad Request
           content:
@@ -208,17 +234,17 @@ paths:
                 $ref: ../models/error.v1.yaml
       operationId: get-areas
       description: エリア一覧を取得する
-      security:
-        - Authorization: []
       tags:
         - 施設関連
+      security:
+        - bearerAuth: []
 components:
   schemas: {}
   securitySchemes:
-    Authorization:
-      name: bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Aij4w
-      type: apiKey
-      in: header
+    bearerAuth:
+      type: http
+      scheme: Bearer
+      description: ''
 tags:
   - name: ユーザー認証
     description: ユーザーログインに関わるAPI
