@@ -376,6 +376,107 @@ paths:
           name: station_name
           description: 駅名
       description: 施設一覧API
+  '/room/availabilities/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 部屋ID
+    get:
+      summary: 部屋利用可能情報API
+      tags:
+        - 施設関連
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: 部屋名
+                  date:
+                    type: string
+                    description: 日付
+                  price:
+                    type: string
+                    description: 単価
+                  capacity:
+                    type: string
+                    description: 定員
+                  time_table:
+                    type: array
+                    description: 時間ごとの状況
+                    items:
+                      type: object
+                      properties:
+                        time:
+                          type: string
+                          description: 時間
+                        availability_count:
+                          type: number
+                          description: 残席数
+                        status:
+                          type: number
+                          description: |-
+                            予約ステータス
+                            0: 予約不可
+                            1: 予約可
+                            2: 空き十分
+                      required:
+                        - time
+                        - availability_count
+                        - status
+                required:
+                  - name
+                  - date
+                  - price
+                  - capacity
+                  - time_table
+              examples:
+                example:
+                  value:
+                    name: 会議室A
+                    date: 2019/12/12
+                    price: 200
+                    capacity: 20
+                    time_table:
+                      - time: '10:30'
+                        availability_count: 0
+                        status: 0
+                      - time: '10:45'
+                        availability_count: 3
+                        status: 1
+                      - time: '11:00'
+                        availability_count: 10
+                        status: 2
+                      - time: '11:15'
+                        availability_count: 3
+                        status: 1
+                      - time: '11:30'
+                        availability_count: 3
+                        status: 1
+                      - time: '11:45'
+                        availability_count: 3
+                        status: 1
+                      - time: '12:00'
+                        availability_count: 3
+                        status: 1
+      operationId: get-room-availabilities-id
+      description: 部屋利用可能情報API
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: date
+          required: true
+          description: 日付
 components:
   schemas: {}
   securitySchemes:
