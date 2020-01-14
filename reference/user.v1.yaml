@@ -182,44 +182,14 @@ paths:
                         name:
                           type: string
                           description: エリア名
-                        stations:
-                          type: array
-                          description: エリア内の駅リスト
-                          items:
-                            type: object
-                            description: ''
-                            properties:
-                              id:
-                                type: string
-                                description: 駅ID
-                              name:
-                                type: string
-                                description: 駅名
-                            required:
-                              - id
-                              - name
               examples:
                 example:
                   value:
                     areas:
                       - id: 1
                         name: 品川
-                        stations:
-                          - id: 1
-                            name: 品川駅
-                          - id: 2
-                            name: 北品川駅
-                          - id: 3
-                            name: 高輪台駅
                       - id: 2
                         name: 渋谷
-                        stations:
-                          - id: 1
-                            name: 品川駅
-                          - id: 2
-                            name: 神泉駅
-                          - id: 3
-                            name: 代官山駅
         '400':
           description: Bad Request
           content:
@@ -238,6 +208,121 @@ paths:
         - 施設関連
       security:
         - bearerAuth: []
+  /facilities:
+    get:
+      summary: 施設一覧
+      tags:
+        - 施設関連
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result_count:
+                    type: number
+                    description: 結果件数
+                  search_condition:
+                    type: string
+                    description: 検索条件
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: 施設名
+                        address:
+                          type: string
+                          description: 住所
+                        tel:
+                          type: string
+                          description: 電話番号
+                        access:
+                          type: string
+                          description: 交通アクセス
+                        parking:
+                          type: string
+                          description: 駐車場情報
+                        url:
+                          type: string
+                          description: ホテルURL
+                        google_map_url:
+                          type: string
+                          description: GoogleマップURL
+                        id:
+                          type: number
+                          description: 施設ID
+                      required:
+                        - name
+                        - address
+                required:
+                  - result_count
+                  - search_condition
+              examples:
+                example:
+                  value:
+                    result_count: 3
+                    search_condition: 2019/12/31  東京都　品川駅　周辺
+                    results:
+                      - id: 1
+                        name: ホテルA
+                        address: 東京都品川区xxxx
+                        tel: 03-0000-1111
+                        access: ＪＲ線品川駅（高輪口）より徒歩２分
+                        parking: '駐車場有り　1,500円（税込み）　先着順'
+                        url: 'https://sample.com'
+                        google_map_url: 'https://www.google.co.jp/maps/'
+                      - id: 2
+                        name: ホテルB
+                        address: 東京都品川区YYYY
+                        tel: 03-0000-3333
+                        access: ＪＲ線品川駅（高輪口）より徒歩２分
+                        parking: '駐車場有り　1,500円（税込み）　先着順'
+                        url: 'https://sample.com'
+                        google_map_url: 'https://www.google.co.jp/maps/'
+                      - id: 3
+                        name: ホテルC
+                        address: 東京都品川区ZZZZ
+                        tel: 03-0000-4444
+                        access: ＪＲ線品川駅（高輪口）より徒歩２分
+                        parking: '駐車場有り　1,500円（税込み）　先着順'
+                        url: 'https://sample.com'
+                        google_map_url: 'https://www.google.co.jp/maps/'
+      operationId: get-facilities
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: date
+          description: 日付(yyyy/mm/dd)
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: range_start_time
+          description: 開始時間
+        - schema:
+            type: string
+          in: query
+          name: range_end_time
+          description: 終了時間
+        - schema:
+            type: number
+          in: query
+          name: area_id
+          description: エリアID
+        - schema:
+            type: string
+          in: query
+          name: station_name
+          description: 駅名
+      description: 施設一覧API
 components:
   schemas: {}
   securitySchemes:
