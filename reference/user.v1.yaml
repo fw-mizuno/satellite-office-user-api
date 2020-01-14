@@ -227,124 +227,94 @@ paths:
                   search_condition:
                     type: string
                     description: 検索条件
+                  date:
+                    type: string
+                    description: 利用日
                   results:
                     type: array
                     items:
                       type: object
                       properties:
                         id:
-                          description: 施設ID
                           type: number
+                          description: 部屋ID
                         name:
                           type: string
-                          description: 施設名
-                        address:
+                          description: 部屋名
+                        price:
                           type: string
-                          description: 住所
-                        tel:
+                          description: 利用単価
+                        capacity:
+                          type: number
+                          description: 座席数
+                        sold_out:
+                          type: boolean
+                          description: 満席かどうか
+                        image_url:
                           type: string
-                          description: 電話番号
-                        access:
-                          type: string
-                          description: 交通アクセス
-                        parking:
-                          type: string
-                          description: 駐車場情報
-                        url:
-                          type: string
-                          description: ホテルURL
-                        google_map_url:
-                          type: string
-                          description: GoogleマップURL
-                        rooms:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: number
-                                description: 部屋ID
-                              name:
-                                type: string
-                                description: 部屋名
-                              price:
-                                type: string
-                                description: 利用単価
-                              capacity:
-                                type: number
-                                description: 座席数
-                              sold_out:
-                                type: boolean
-                                description: 満席かどうか
+                          description: 画像URL
+                        facility:
+                          $ref: ../models/facilitymodel.v1.yaml
                       required:
+                        - id
                         - name
-                        - address
+                        - price
+                        - capacity
+                        - sold_out
+                        - facility
                 required:
                   - result_count
                   - search_condition
+                  - date
               examples:
                 example:
                   value:
                     result_count: 3
                     search_condition: 2019/12/31  東京都　品川駅　周辺
+                    date: 2019/12/12
                     results:
                       - id: 1
                         name: ホテルA
-                        address: 東京都品川区xxxx
-                        tel: 03-0000-1111
-                        access: ＪＲ線品川駅（高輪口）より徒歩２分
-                        parking: '駐車場有り　1,500円（税込み）　先着順'
-                        url: 'https://sample.com'
-                        google_map_url: 'https://www.google.co.jp/maps/'
-                        rooms:
-                          - id: 1
-                            name: 会議室A
-                            price: 200
-                            capacity: 20
-                            sold_out: true
-                          - id: 2
-                            name: 会議室B
-                            price: 300
-                            capacity: 10
-                            sold_out: false
+                        price: 200
+                        capacity: 20
+                        sold_out: true
+                        image_url: 'http://placehold.it/300x300'
+                        facility:
+                          id: 1
+                          address: 東京都品川区xxxx
+                          tel: 03-0000-1111
+                          access: ＪＲ線品川駅（高輪口）より徒歩２分
+                          parking: '駐車場有り　1,500円（税込み）　先着順'
+                          url: 'https://sample.com'
+                          google_map_url: 'https://www.google.co.jp/maps/'
                       - id: 2
                         name: ホテルB
-                        address: 東京都品川区YYYY
-                        tel: 03-0000-3333
-                        access: ＪＲ線品川駅（高輪口）より徒歩２分
-                        parking: '駐車場有り　1,500円（税込み）　先着順'
-                        url: 'https://sample.com'
-                        google_map_url: 'https://www.google.co.jp/maps/'
-                        rooms:
-                          - id: 1
-                            name: 会議室A
-                            price: 200
-                            capacity: 20
-                            sold_out: true
-                          - id: 2
-                            name: 会議室B
-                            price: 300
-                            capacity: 10
-                            sold_out: false
+                        price: 200
+                        capacity: 20
+                        sold_out: true
+                        image_url: 'http://placehold.it/300x300'
+                        facility:
+                          id: 1
+                          address: 東京都品川区xxxx
+                          tel: 03-0000-1111
+                          access: ＪＲ線品川駅（高輪口）より徒歩２分
+                          parking: '駐車場有り　1,500円（税込み）　先着順'
+                          url: 'https://sample.com'
+                          google_map_url: 'https://www.google.co.jp/maps/'
                       - id: 3
                         name: ホテルC
-                        address: 東京都品川区ZZZZ
-                        tel: 03-0000-4444
-                        access: ＪＲ線品川駅（高輪口）より徒歩２分
-                        parking: '駐車場有り　1,500円（税込み）　先着順'
-                        url: 'https://sample.com'
-                        google_map_url: 'https://www.google.co.jp/maps/'
-                        rooms:
-                          - id: 1
-                            name: 会議室A
-                            price: 200
-                            capacity: 20
-                            sold_out: true
-                          - id: 2
-                            name: 会議室B
-                            price: 300
-                            capacity: 10
-                            sold_out: false
+                        price: 200
+                        capacity: 20
+                        sold_out: true
+                        image_url: 'http://placehold.it/300x300'
+                        facility:
+                          id: 1
+                          address: 東京都品川区xxxx
+                          tel: 03-0000-1111
+                          access: ＪＲ線品川駅（高輪口）より徒歩２分
+                          parking: '駐車場有り　1,500円（税込み）　先着順'
+                          url: 'https://sample.com'
+                          google_map_url: 'https://www.google.co.jp/maps/'
         '400':
           description: Bad Request
           content:
