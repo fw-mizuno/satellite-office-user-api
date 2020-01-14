@@ -46,14 +46,12 @@ paths:
                   - token
                   - is_unauth_user
               examples:
-                user_id:
-                  value: 1
-                user_name:
-                  value: 太郎
-                token:
-                  value: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Ai
-                is_unauth_user:
-                  value: true
+                Example:
+                  value:
+                    user_id: 1
+                    user_name: 太郎
+                    token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Ai
+                    is_unauth_user: true
         '400':
           description: Bad Request
           content:
