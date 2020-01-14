@@ -649,6 +649,9 @@ paths:
                           type: number
                         date:
                           type: string
+                          description: 利用予定日
+                        create_date:
+                          type: string
                           description: 予約日
                         facility:
                           $ref: ../models/facilitymodel.v1.yaml
@@ -677,9 +680,6 @@ paths:
                             0: 未チェックイン
                             1: チェックイン済み
                             2: チェックアウト済み
-                        create_date:
-                          type: string
-                          description: 予約日
                       required:
                         - id
                         - date
@@ -687,10 +687,10 @@ paths:
                         - name
                         - price
                         - start_time
-                        - end_time
                         - is_extend
                         - is_cancel
                         - check_status
+                        - end_time
                         - create_date
                 required:
                   - reservations
@@ -754,28 +754,44 @@ paths:
                         id:
                           type: number
                           description: 予約ID
-                        facility_name:
+                        date:
                           type: string
-                          description: 施設名
-                        room_name:
+                          description: 利用日
+                        create_date:
+                          type: string
+                          description: 予約日
+                        facility:
+                          $ref: ../models/facilitymodel.v1.yaml
+                        name:
                           type: string
                           description: 部屋名
                         price:
-                          type: number
+                          type: string
                           description: 単価
-                        reserve_date:
+                        start_time:
                           type: string
-                          description: 予約日
-                        reserve_time:
+                          description: 予約開始時間
+                        end_time:
                           type: string
-                          description: 予約時間
+                          description: 予約終了時間
+                        check_out_time:
+                          type: string
+                          description: チェックアウト時間
+                        check_in_time:
+                          type: string
+                          description: チェックイン時間
                       required:
                         - id
-                        - facility_name
-                        - room_name
+                        - date
+                        - facility
+                        - name
                         - price
-                        - reserve_date
-                        - reserve_time
+                        - start_time
+                        - end_time
+                        - is_extend
+                        - is_cancel
+                        - check_status
+                        - create_date
                 required:
                   - histories
               examples:
@@ -783,29 +799,23 @@ paths:
                   value:
                     histories:
                       - id: 1
-                        facility_name: ホテルA
-                        room_name: 会議室A
+                        date: 2019/12/12
+                        create_date: 2019/12/10
+                        facility:
+                          id: 1
+                          name: ホテルA
+                          address: 東京都品川区xxxx
+                          tel: 03-0000-1111
+                          access: ＪＲ線品川駅（高輪口）より徒歩２分
+                          parking: '駐車場有り　1,500円（税込み）　先着順'
+                          url: 'https://sample.com'
+                          google_map_url: 'https://www.google.co.jp/maps/'
+                        name: 会議室A
                         price: 200
-                        reserved_date: 2019/12/12
-                        reserved_time: '10:00~13:00'
-                      - id: 2
-                        facility_name: ホテルB
-                        room_name: 会議室B
-                        price: 2000
-                        reserved_date: 2019/12/12
-                        reserved_time: '10:00~13:00'
-                      - id: 3
-                        facility_name: ホテルC
-                        room_name: 会議室C
-                        price: 100
-                        reserved_date: 2019/12/12
-                        reserved_time: '10:00~13:00'
-                      - id: 4
-                        facility_name: ホテルD
-                        room_name: 会議室D
-                        price: 1000
-                        reserved_date: 2019/12/12
-                        reserved_time: '10:00~13:00'
+                        start_time: '10:00'
+                        end_time: '13:00'
+                        check_in_time: '10:00'
+                        check_out_time: '13:00'
       operationId: get-histories
       security:
         - bearerAuth: []
