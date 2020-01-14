@@ -232,6 +232,9 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: number
+                          description: 施設ID
                         name:
                           type: string
                           description: 施設名
@@ -253,9 +256,26 @@ paths:
                         google_map_url:
                           type: string
                           description: GoogleマップURL
-                        id:
-                          type: number
-                          description: 施設ID
+                        rooms:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: number
+                                description: 部屋ID
+                              name:
+                                type: string
+                                description: 部屋名
+                              price:
+                                type: string
+                                description: 利用単価
+                              capacity:
+                                type: number
+                                description: 座席数
+                              sold_out:
+                                type: boolean
+                                description: 満席かどうか
                       required:
                         - name
                         - address
@@ -276,6 +296,17 @@ paths:
                         parking: '駐車場有り　1,500円（税込み）　先着順'
                         url: 'https://sample.com'
                         google_map_url: 'https://www.google.co.jp/maps/'
+                        rooms:
+                          - id: 1
+                            name: 会議室A
+                            price: 200
+                            capacity: 20
+                            sold_out: true
+                          - id: 2
+                            name: 会議室B
+                            price: 300
+                            capacity: 10
+                            sold_out: false
                       - id: 2
                         name: ホテルB
                         address: 東京都品川区YYYY
@@ -284,6 +315,17 @@ paths:
                         parking: '駐車場有り　1,500円（税込み）　先着順'
                         url: 'https://sample.com'
                         google_map_url: 'https://www.google.co.jp/maps/'
+                        rooms:
+                          - id: 1
+                            name: 会議室A
+                            price: 200
+                            capacity: 20
+                            sold_out: true
+                          - id: 2
+                            name: 会議室B
+                            price: 300
+                            capacity: 10
+                            sold_out: false
                       - id: 3
                         name: ホテルC
                         address: 東京都品川区ZZZZ
@@ -292,6 +334,17 @@ paths:
                         parking: '駐車場有り　1,500円（税込み）　先着順'
                         url: 'https://sample.com'
                         google_map_url: 'https://www.google.co.jp/maps/'
+                        rooms:
+                          - id: 1
+                            name: 会議室A
+                            price: 200
+                            capacity: 20
+                            sold_out: true
+                          - id: 2
+                            name: 会議室B
+                            price: 300
+                            capacity: 10
+                            sold_out: false
       operationId: get-facilities
       security:
         - bearerAuth: []
