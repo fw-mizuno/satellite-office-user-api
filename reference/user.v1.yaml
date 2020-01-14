@@ -697,9 +697,13 @@ paths:
                         is_cancel:
                           type: boolean
                           description: キャンセル可能かどうか
-                        is_check_in:
-                          type: boolean
-                          description: チェックイン有無
+                        check_status:
+                          type: number
+                          description: |-
+                            チェックインアウト状態
+                            0: 未チェックイン
+                            1: チェックイン済み
+                            2: チェックアウト済み
                       required:
                         - id
                         - date
@@ -709,7 +713,7 @@ paths:
                         - reserve_time
                         - is_extend
                         - is_cancel
-                        - is_check_in
+                        - check_status
                 required:
                   - reservations
               examples:
