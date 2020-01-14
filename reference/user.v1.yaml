@@ -753,6 +753,95 @@ paths:
       description: 予約一覧API
       security:
         - bearerAuth: []
+  /histories:
+    get:
+      summary: 実績一覧
+      tags:
+        - 実績
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  histories:
+                    type: array
+                    description: 実績一覧
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: 予約ID
+                        facility_name:
+                          type: string
+                          description: 施設名
+                        room_name:
+                          type: string
+                          description: 部屋名
+                        price:
+                          type: number
+                          description: 単価
+                        reserve_date:
+                          type: string
+                          description: 予約日
+                        reserve_time:
+                          type: string
+                          description: 予約時間
+                      required:
+                        - id
+                        - facility_name
+                        - room_name
+                        - price
+                        - reserve_date
+                        - reserve_time
+                required:
+                  - histories
+              examples:
+                example:
+                  value:
+                    histories:
+                      - id: 1
+                        facility_name: ホテルA
+                        room_name: 会議室A
+                        price: 200
+                        reserved_date: 2019/12/12
+                        reserved_time: '10:00~13:00'
+                      - id: 2
+                        facility_name: ホテルB
+                        room_name: 会議室B
+                        price: 2000
+                        reserved_date: 2019/12/12
+                        reserved_time: '10:00~13:00'
+                      - id: 3
+                        facility_name: ホテルC
+                        room_name: 会議室C
+                        price: 100
+                        reserved_date: 2019/12/12
+                        reserved_time: '10:00~13:00'
+                      - id: 4
+                        facility_name: ホテルD
+                        room_name: 会議室D
+                        price: 1000
+                        reserved_date: 2019/12/12
+                        reserved_time: '10:00~13:00'
+      operationId: get-histories
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: number
+          in: query
+          description: |-
+            範囲
+            0: 1か月
+            1: 3か月
+            2: ６か月
+            3: １年
+          name: range
+      description: 実績一覧API
 components:
   schemas: {}
   securitySchemes:
@@ -767,3 +856,5 @@ tags:
     description: 施設関連
   - name: 予約
     description: 予約
+  - name: 実績
+    description: 実績
