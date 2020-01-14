@@ -396,18 +396,36 @@ paths:
               schema:
                 type: object
                 properties:
+                  facility_id:
+                    type: string
+                    description: 施設ID
+                  facility_name:
+                    type: string
+                    description: 施設名
                   name:
                     type: string
                     description: 部屋名
-                  date:
+                  address:
                     type: string
-                    description: 日付
-                  price:
+                    description: 住所
+                  tel:
                     type: string
-                    description: 単価
-                  capacity:
+                    description: 電話番号
+                  access:
                     type: string
-                    description: 定員
+                    description: 交通アクセス
+                  parking:
+                    type: string
+                    description: 駐車場情報
+                  url:
+                    type: string
+                    description: ホテルURL
+                  google_map_url:
+                    type: string
+                    description: GoogleマップURL
+                  equipment:
+                    type: string
+                    description: 設備
                   time_table:
                     type: array
                     description: 時間ごとの状況
@@ -432,18 +450,27 @@ paths:
                         - availability_count
                         - status
                 required:
+                  - facility_id
+                  - facility_name
                   - name
-                  - date
-                  - price
-                  - capacity
+                  - address
+                  - tel
+                  - access
+                  - parking
                   - time_table
               examples:
                 example:
                   value:
+                    facility_id: 100
+                    facility_name: ホテルA
                     name: 会議室A
-                    date: 2019/12/12
-                    price: 200
-                    capacity: 20
+                    address: 東京都品川区xxxx
+                    tel: 03-0000-1111
+                    access: ＪＲ線品川駅（高輪口）より徒歩２分
+                    parking: '駐車場有り　1,500円（税込み）　先着順'
+                    url: 'https://sample.com'
+                    google_map_url: 'https://www.google.co.jp/maps/'
+                    equipment: 'インターネット接続無料（有線・無線） / コンセント / プリンター '
                     time_table:
                       - time: '10:30'
                         availability_count: 0
