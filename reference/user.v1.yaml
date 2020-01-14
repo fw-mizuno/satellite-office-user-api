@@ -233,8 +233,8 @@ paths:
                       type: object
                       properties:
                         id:
-                          type: number
                           description: 施設ID
+                          type: number
                         name:
                           type: string
                           description: 施設名
@@ -345,6 +345,18 @@ paths:
                             price: 300
                             capacity: 10
                             sold_out: false
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
       operationId: get-facilities
       security:
         - bearerAuth: []
@@ -396,33 +408,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  facility_id:
-                    type: string
-                    description: 施設ID
-                  facility_name:
-                    type: string
-                    description: 施設名
                   name:
                     type: string
                     description: 部屋名
-                  address:
-                    type: string
-                    description: 住所
-                  tel:
-                    type: string
-                    description: 電話番号
-                  access:
-                    type: string
-                    description: 交通アクセス
-                  parking:
-                    type: string
-                    description: 駐車場情報
-                  url:
-                    type: string
-                    description: ホテルURL
-                  google_map_url:
-                    type: string
-                    description: GoogleマップURL
+                  facility:
+                    $ref: ../models/facilitymodel.v1.yaml
                   equipment:
                     type: string
                     description: 設備
@@ -450,14 +440,9 @@ paths:
                         - availability_count
                         - status
                 required:
-                  - facility_id
-                  - facility_name
-                  - name
-                  - address
-                  - tel
-                  - access
-                  - parking
                   - time_table
+                  - name
+                  - facility
               examples:
                 example:
                   value:
@@ -493,6 +478,18 @@ paths:
                       - time: '12:00'
                         availability_count: 3
                         status: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
       operationId: get-room-availabilities-id
       description: 部屋利用可能情報API
       security:
@@ -504,6 +501,254 @@ paths:
           name: date
           required: true
           description: 日付
+  /reservations/register:
+    post:
+      summary: 予約登録
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reserve_id:
+                    type: number
+              examples:
+                example:
+                  value:
+                    reserve_id: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-reservations-register
+      description: 予約登録API
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                room_id:
+                  type: number
+                date:
+                  type: string
+                start_time:
+                  type: string
+                end_time:
+                  type: string
+                count:
+                  type: number
+    parameters: []
+  '/reservations/cancel/{id}':
+    parameters:
+      - schema:
+          type: number
+        name: id
+        in: path
+        required: true
+        description: 予約ID
+    delete:
+      summary: 予約取り消し
+      tags:
+        - 予約
+      operationId: delete-reservations-cancel-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      description: 予約取り消しAPI
+      security:
+        - bearerAuth: []
+  /reservations/check_in:
+    post:
+      summary: チェックイン
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-reservations-check_in
+      description: チェックインAPI
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reserve_id:
+                  type: string
+                  description: 予約ID
+              required:
+                - reserve_id
+    parameters: []
+  /reservations/check_out:
+    post:
+      summary: チェックアウト
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-reservations-check_out
+      description: チェックアウトAPI
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reserve_id:
+                  type: string
+                  description: 予約ID
+              required:
+                - reserve_id
+    parameters: []
+  /reservations:
+    get:
+      summary: 予約一覧
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reservations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          description: 予約ID
+                          type: number
+                        date:
+                          type: string
+                          description: 予約日
+                        facility:
+                          $ref: ../models/facilitymodel.v1.yaml
+                        room_name:
+                          type: string
+                          description: 部屋名
+                        price:
+                          type: string
+                          description: 単価
+                        reserve_time:
+                          type: string
+                          description: 予約時間
+                        is_extend:
+                          type: boolean
+                          description: 延長可能かどうか
+                        is_cancel:
+                          type: boolean
+                          description: キャンセル可能かどうか
+                        is_check_in:
+                          type: boolean
+                          description: チェックイン有無
+                      required:
+                        - id
+                        - date
+                        - facility
+                        - room_name
+                        - price
+                        - reserve_time
+                        - is_extend
+                        - is_cancel
+                        - is_check_in
+                required:
+                  - reservations
+              examples:
+                example:
+                  value:
+                    reservations:
+                      - id: 1
+                        date: 2019/12/12
+                        facility:
+                          id: 1
+                          name: ホテルA
+                          address: 東京都品川区xxxx
+                          tel: 03-0000-1111
+                          access: ＪＲ線品川駅（高輪口）より徒歩２分
+                          parking: '駐車場有り　1,500円（税込み）　先着順'
+                          url: 'https://sample.com'
+                          google_map_url: 'https://www.google.co.jp/maps/'
+                        room_name: 会議室A
+                        price: 200
+                        reserve_time: '10:00~13:00'
+                        is_extend: true
+                        is_cancel: false
+                        is_check_in: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: get-reservations
+      description: 予約一覧API
+      security:
+        - bearerAuth: []
 components:
   schemas: {}
   securitySchemes:
@@ -516,3 +761,5 @@ tags:
     description: ユーザーログインに関わるAPI
   - name: 施設関連
     description: 施設関連
+  - name: 予約
+    description: 予約
