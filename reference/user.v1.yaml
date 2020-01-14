@@ -370,12 +370,12 @@ paths:
         - schema:
             type: string
           in: query
-          name: range_start_time
+          name: start_time
           description: 開始時間
         - schema:
             type: string
           in: query
-          name: range_end_time
+          name: end_time
           description: 終了時間
         - schema:
             type: number
@@ -842,6 +842,69 @@ paths:
             3: １年
           name: range
       description: 実績一覧API
+  /users/register:
+    post:
+      summary: ユーザー登録
+      tags:
+        - ユーザー認証
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-users-register
+      description: ユーザー登録API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_id:
+                  type: number
+                  description: 企業ID
+                first_name:
+                  type: string
+                  description: 名
+                last_name:
+                  type: string
+                  description: 姓
+                first_name_kana:
+                  type: string
+                  description: 名　カナ
+                last_name_kana:
+                  type: string
+                  description: 姓　カナ
+                email:
+                  type: string
+                  description: メールアドレス
+                password:
+                  type: string
+                  description: パスワード
+                group_name:
+                  type: string
+                  description: グループ名
+                employee_id:
+                  type: string
+                  description: 社員ID
+              required:
+                - company_id
+                - first_name
+                - last_name
+                - first_name_kana
+                - last_name_kana
+                - email
+                - password
 components:
   schemas: {}
   securitySchemes:
