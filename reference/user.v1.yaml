@@ -159,8 +159,6 @@ paths:
                   type: string
               required:
                 - email
-      security:
-        - bearerAuth: []
   /areas:
     get:
       summary: エリア一覧取得
