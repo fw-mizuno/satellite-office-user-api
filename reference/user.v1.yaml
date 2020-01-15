@@ -10,7 +10,7 @@ info:
 servers:
   - url: 'https://satellite-office-app.herokuapp.com'
     description: Mock
-  - url: 'https://{本番ドメイン}/user/api/v1/'
+  - url: 'https://{本番ドメイン}/user/api/v1'
     description: Production
 paths:
   /login:
@@ -206,14 +206,14 @@ paths:
       operationId: get-areas
       description: エリア一覧を取得する
       tags:
-        - 施設関連
+        - ホテル関連
       security:
         - bearerAuth: []
-  /facilities:
+  /hotels:
     get:
-      summary: 施設一覧
+      summary: ホテル一覧
       tags:
-        - 施設関連
+        - ホテル関連
       responses:
         '200':
           description: OK
@@ -237,32 +237,60 @@ paths:
                       type: object
                       properties:
                         id:
-                          type: number
-                          description: 部屋ID
+                          type: string
+                          description: 施設ID
                         name:
                           type: string
-                          description: 部屋名
-                        price:
+                          description: 施設名
+                        address:
                           type: string
-                          description: 利用単価
-                        capacity:
-                          type: number
-                          description: 座席数
-                        sold_out:
-                          type: boolean
-                          description: 満席かどうか
-                        image_url:
+                          description: 住所
+                        tel:
                           type: string
-                          description: 画像URL
-                        facility:
-                          $ref: ../models/facilitymodel.v1.yaml
+                          description: 電話番号
+                        access:
+                          type: string
+                          description: 交通アクセス
+                        parking:
+                          type: string
+                          description: 駐車場情報
+                        url:
+                          type: string
+                          description: ホテルURL
+                        google_map_url:
+                          type: string
+                          description: GoogleマップURL
+                        rooms:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: number
+                                description: 部屋ID
+                              name:
+                                type: string
+                                description: 部屋名
+                              price:
+                                type: string
+                                description: 利用単価
+                              capacity:
+                                type: number
+                                description: 座席数
+                              sold_out:
+                                type: boolean
+                                description: 満席かどうか
+                              image_url:
+                                type: string
+                                description: 画像URL
                       required:
                         - id
                         - name
-                        - price
-                        - capacity
-                        - sold_out
-                        - facility
+                        - address
+                        - tel
+                        - access
+                        - parking
+                        - rooms
                 required:
                   - result_count
                   - search_condition
@@ -276,46 +304,19 @@ paths:
                     results:
                       - id: 1
                         name: ホテルA
-                        price: 200
-                        capacity: 20
-                        sold_out: true
-                        image_url: 'http://placehold.it/300x300'
-                        facility:
-                          id: 1
-                          address: 東京都品川区xxxx
-                          tel: 03-0000-1111
-                          access: ＪＲ線品川駅（高輪口）より徒歩２分
-                          parking: '駐車場有り　1,500円（税込み）　先着順'
-                          url: 'https://sample.com'
-                          google_map_url: 'https://www.google.co.jp/maps/'
-                      - id: 2
-                        name: ホテルB
-                        price: 200
-                        capacity: 20
-                        sold_out: true
-                        image_url: 'http://placehold.it/300x300'
-                        facility:
-                          id: 1
-                          address: 東京都品川区xxxx
-                          tel: 03-0000-1111
-                          access: ＪＲ線品川駅（高輪口）より徒歩２分
-                          parking: '駐車場有り　1,500円（税込み）　先着順'
-                          url: 'https://sample.com'
-                          google_map_url: 'https://www.google.co.jp/maps/'
-                      - id: 3
-                        name: ホテルC
-                        price: 200
-                        capacity: 20
-                        sold_out: true
-                        image_url: 'http://placehold.it/300x300'
-                        facility:
-                          id: 1
-                          address: 東京都品川区xxxx
-                          tel: 03-0000-1111
-                          access: ＪＲ線品川駅（高輪口）より徒歩２分
-                          parking: '駐車場有り　1,500円（税込み）　先着順'
-                          url: 'https://sample.com'
-                          google_map_url: 'https://www.google.co.jp/maps/'
+                        address: 東京都品川区xxxx
+                        tel: 03-0000-1111
+                        access: ＪＲ線品川駅（高輪口）より徒歩２分
+                        parking: '駐車場有り　1,500円（税込み）　先着順'
+                        url: 'https://sample.com'
+                        google_map_url: 'https://www.google.co.jp/maps/'
+                        rooms:
+                          - id: 1
+                            name: 会議室A
+                            price: 200
+                            capacity: 20
+                            sold_out: true
+                            image_url: 'http://placehold.it/300x300'
         '400':
           description: Bad Request
           content:
@@ -328,7 +329,7 @@ paths:
             application/json:
               schema:
                 $ref: ../models/error.v1.yaml
-      operationId: get-facilities
+      operationId: get-hotels
       security:
         - bearerAuth: []
       parameters:
@@ -358,7 +359,7 @@ paths:
           in: query
           name: station_name
           description: 駅名
-      description: 施設一覧API
+      description: ホテル一覧API
   '/room/availabilities/{id}':
     parameters:
       - schema:
@@ -370,7 +371,7 @@ paths:
     get:
       summary: 部屋利用可能情報API
       tags:
-        - 施設関連
+        - ホテル関連
       responses:
         '200':
           description: OK
@@ -382,8 +383,8 @@ paths:
                   name:
                     type: string
                     description: 部屋名
-                  facility:
-                    $ref: ../models/facilitymodel.v1.yaml
+                  hotel:
+                    $ref: ../models/hotelmodel.v1.yaml
                   equipment:
                     type: string
                     description: 設備
@@ -413,12 +414,12 @@ paths:
                 required:
                   - time_table
                   - name
-                  - facility
+                  - hotel
               examples:
                 example:
                   value:
-                    facility_id: 100
-                    facility_name: ホテルA
+                    hotel_id: 100
+                    hotel_name: ホテルA
                     name: 会議室A
                     address: 東京都品川区xxxx
                     tel: 03-0000-1111
@@ -654,8 +655,8 @@ paths:
                         create_date:
                           type: string
                           description: 予約日
-                        facility:
-                          $ref: ../models/facilitymodel.v1.yaml
+                        hotel:
+                          $ref: ../models/hotelmodel.v1.yaml
                         name:
                           type: string
                           description: 部屋名
@@ -684,7 +685,7 @@ paths:
                       required:
                         - id
                         - date
-                        - facility
+                        - hotel
                         - name
                         - price
                         - start_time
@@ -701,7 +702,7 @@ paths:
                     reservations:
                       - id: 1
                         date: 2019/12/12
-                        facility:
+                        hotel:
                           id: 1
                           name: ホテルA
                           address: 東京都品川区xxxx
@@ -761,8 +762,8 @@ paths:
                         create_date:
                           type: string
                           description: 予約日
-                        facility:
-                          $ref: ../models/facilitymodel.v1.yaml
+                        hotel:
+                          $ref: ../models/hotelmodel.v1.yaml
                         name:
                           type: string
                           description: 部屋名
@@ -784,7 +785,7 @@ paths:
                       required:
                         - id
                         - date
-                        - facility
+                        - hotel
                         - name
                         - price
                         - start_time
@@ -802,7 +803,7 @@ paths:
                       - id: 1
                         date: 2019/12/12
                         create_date: 2019/12/10
-                        facility:
+                        hotel:
                           id: 1
                           name: ホテルA
                           address: 東京都品川区xxxx
@@ -905,8 +906,8 @@ components:
 tags:
   - name: ユーザー認証
     description: ユーザーログインに関わるAPI
-  - name: 施設関連
-    description: 施設関連
+  - name: ホテル関連
+    description: ホテル関連
   - name: 予約
     description: 予約
   - name: 実績
