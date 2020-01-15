@@ -1,0 +1,91 @@
+openapi: 3.0.0
+info:
+  title: hotel
+  version: '1.0'
+  contact:
+    name: masashi mizuno
+  description: |-
+    Hotel向けAPI
+    認証はCognitoが発行したJWT Tokenを利用する
+servers:
+  - url: 'https://satellite-office-app.herokuapp.com'
+    description: Mock
+  - url: 'https://{本番ドメイン}/hotel/api/v1'
+    description: Production
+paths:
+  /hotel/login:
+    post:
+      summary: ログイン
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: number
+                    description: ログインしたユーザーのID
+                    example: 100
+                  user_name:
+                    type: string
+                    description: ユーザー名
+                    example: 鈴木太郎
+                  token:
+                    type: string
+                    description: アクセストークン
+                    format: string
+                    example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Aij4w
+                required:
+                  - user_id
+                  - user_name
+                  - token
+              examples:
+                Example:
+                  value:
+                    user_id: 1
+                    user_name: 太郎
+                    token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Ai
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-login
+      description: Cognitoを利用した認証を行う
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 登録メールアドレス
+                password:
+                  type: string
+                  description: ログインパスワード
+              required:
+                - email
+                - password
+        description: ''
+      tags:
+        - 認証
+    parameters: []
+components:
+  schemas: {}
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: Bearer
+tags:
+  - name: 認証
+    description: ログインに関わるAPI
