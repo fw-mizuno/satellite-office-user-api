@@ -159,6 +159,57 @@ paths:
       description: ホテル情報取得API
       security:
         - bearerAuth: []
+  /hotel/edit:
+    post:
+      summary: ホテル情報編集
+      tags:
+        - ホテル
+      responses:
+        '200':
+          description: OK
+      operationId: get-hotel-edit
+      description: ホテル情報編集API
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ホテル名
+                name_kana:
+                  type: string
+                  description: ホテル名カナ
+                address:
+                  type: string
+                  description: 住所
+                tel:
+                  type: string
+                  description: 電話番号
+                url:
+                  type: string
+                  description: URL
+                area_id:
+                  type: number
+                  description: エリアコード
+                station:
+                  type: string
+                  description: 最寄り駅
+                access:
+                  type: string
+                  description: 交通アクセス
+                parking:
+                  type: string
+                  description: 駐車場                
+              required:
+                - area_id
+                - tel
+                - address
+                - name_kana
+                - name
 components:
   schemas: {}
   securitySchemes:
@@ -168,3 +219,5 @@ components:
 tags:
   - name: 認証
     description: ログインに関わるAPI
+  - name: ホテル
+    description: ホテルAPI
