@@ -524,7 +524,51 @@ paths:
                   type: string
                 count:
                   type: number
-    parameters: []
+  /reservations/extend:
+    post:
+      summary: 延長登録
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reserve_id:
+                    type: number
+              examples:
+                example:
+                  value:
+                    reserve_id: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-reservations-extend
+      description: 予約延長API
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reserve_id:
+                  type: number
+                end_time:
+                  type: string
   '/reservations/cancel/{id}':
     parameters:
       - schema:
@@ -896,6 +940,52 @@ paths:
                 - last_name_kana
                 - email
                 - password
+  /reservations/extend_check:
+    post:
+      summary: 延長可能かどうか
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  can_extend:
+                    type: boolean
+                    description: 延長可能かどうか
+              examples:
+                example:
+                  value:
+                    can_extend: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-reservations-extend-check
+      description: 延長可否確認API
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reserve_id:
+                  type: number
+                end_time:
+                  type: string
 components:
   schemas: {}
   securitySchemes:
