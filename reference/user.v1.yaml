@@ -9,6 +9,9 @@ info:
     認証はCognitoが発行したJWT Tokenを利用する
 servers:
   - url: 'https://satellite-office-app.herokuapp.com'
+    description: Mock
+  - url: 'https://{本番ドメイン}/user/api/v1/'
+    description: Production
 paths:
   /login:
     post:
