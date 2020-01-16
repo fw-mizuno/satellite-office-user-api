@@ -203,13 +203,114 @@ paths:
                   description: 交通アクセス
                 parking:
                   type: string
-                  description: 駐車場                
+                  description: 駐車場
               required:
                 - area_id
                 - tel
                 - address
                 - name_kana
                 - name
+  /hotel/rooms:
+    get:
+      summary: 部屋一覧
+      tags:
+        - 部屋
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rooms:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: 部屋ID
+                        name:
+                          type: string
+                          description: 部屋名
+                        capacity:
+                          type: string
+                          description: 席数
+                        price:
+                          type: string
+                          description: 単価
+                        start_time:
+                          type: string
+                          description: 開始時間
+                        end_time:
+                          type: string
+                          description: 終了時間
+                        available_day_of_week:
+                          type: object
+                          description: 開放曜日
+                          required:
+                            - monday
+                            - tuesday
+                            - wednesday
+                            - thursday
+                            - friday
+                            - saturday
+                            - sunday
+                          properties:
+                            monday:
+                              type: boolean
+                            tuesday:
+                              type: boolean
+                            wednesday:
+                              type: boolean
+                            thursday:
+                              type: boolean
+                            friday:
+                              type: boolean
+                            saturday:
+                              type: boolean
+                            sunday:
+                              type: boolean
+                        non_open:
+                          type: boolean
+                          description: 非開放か
+                        status:
+                          type: number
+                          description: '0: 停止 1: 利用可能'
+                      required:
+                        - id
+                        - name
+                        - capacity
+                        - price
+                        - start_time
+                        - end_time
+                        - available_day_of_week
+                        - non_open
+                        - status
+              examples:
+                example:
+                  value:
+                    rooms:
+                      - id: 1
+                        name: 会議室A
+                        capacity: 10
+                        price: 200
+                        start_time: '10:00'
+                        end_time: '20:00'
+                        available_day_of_week:
+                          monday: true
+                          tuesday: true
+                          wednesday: false
+                          thursday: true
+                          friday: true
+                          saturday: false
+                          sunday: false
+                        non_open: false
+                        status: 1
+      operationId: get-hotel-rooms
+      security:
+        - bearerAuth: []
 components:
   schemas: {}
   securitySchemes:
