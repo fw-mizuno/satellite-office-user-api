@@ -548,6 +548,99 @@ paths:
       description: |-
         部屋追加・編集API
         IDがあれば編集、なければ新規
+  '/hotel/rooms/{id}/open_days':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 部屋ID
+    get:
+      summary: 開放日一覧
+      tags:
+        - 部屋
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  open_days:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          description: 日付
+                        price:
+                          type: number
+                          description: 単価
+                      required:
+                        - date
+                        - price
+              examples:
+                example:
+                  value:
+                    open_days:
+                      - date: 2019/12/12
+                        price: 200
+                      - date: 2019/12/14
+                        price: 250
+                      - date: 2019/12/16
+                        price: 300
+                      - date: 2019/12/18
+                        price: 350
+                      - date: 2019/12/20
+                        price: 400
+      operationId: get-hotel-rooms-id-open_days
+      description: 開放日一覧取得API
+      security:
+        - bearerAuth: []
+      requestBody: {}
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: date
+          description: 年月
+          required: true
+    post:
+      summary: 開放日登録
+      tags:
+        - 部屋
+      responses:
+        '200':
+          description: OK
+      operationId: post-hotel-rooms-id-open_days
+      security:
+        - bearerAuth: []
+      description: 開放日登録API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                open_days:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        description: 日付
+                      price:
+                        type: number
+                        description: 単価
+                    required:
+                      - date
+                      - price
+              required:
+                - open_days
 components:
   schemas: {}
   securitySchemes:
