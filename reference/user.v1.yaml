@@ -771,6 +771,7 @@ paths:
                         is_extend: true
                         is_cancel: false
                         is_check_in: true
+                        check_status: 1
         '400':
           description: Bad Request
           content:
