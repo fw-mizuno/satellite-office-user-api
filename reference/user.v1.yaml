@@ -704,12 +704,18 @@ paths:
                           description: 予約日
                         hotel:
                           $ref: ../models/hotelmodel.v1.yaml
-                        name:
-                          type: string
-                          description: 施設名
-                        price:
-                          type: string
-                          description: 単価
+                        facility:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                              description: 施設ID
+                            name:
+                              type: string
+                              description: 施設名
+                            price:
+                              type: string
+                              description: 単価
                         start_time:
                           type: string
                           description: 予約開始時間
