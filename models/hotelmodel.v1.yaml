@@ -3,10 +3,10 @@ type: object
 properties:
   id:
     type: string
-    description: 施設ID
+    description: ホテルID
   name:
     type: string
-    description: 施設名
+    description: ホテル名
   address:
     type: string
     description: 住所

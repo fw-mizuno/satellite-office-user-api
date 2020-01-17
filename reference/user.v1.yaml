@@ -238,10 +238,10 @@ paths:
                       properties:
                         id:
                           type: string
-                          description: 施設ID
+                          description: ホテルID
                         name:
                           type: string
-                          description: 施設名
+                          description: ホテル名
                         address:
                           type: string
                           description: 住所
@@ -383,11 +383,14 @@ paths:
                   name:
                     type: string
                     description: 部屋名
-                  hotel:
-                    $ref: ../models/hotelmodel.v1.yaml
+                  price:
+                    type: number
+                    description: 単価
                   equipment:
                     type: string
                     description: 設備
+                  hotel:
+                    $ref: ../models/hotelmodel.v1.yaml
                   time_table:
                     type: array
                     description: 時間ごとの状況
