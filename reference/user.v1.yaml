@@ -260,17 +260,17 @@ paths:
                         google_map_url:
                           type: string
                           description: GoogleマップURL
-                        rooms:
+                        facilities:
                           type: array
                           items:
                             type: object
                             properties:
                               id:
                                 type: number
-                                description: 部屋ID
+                                description: 施設ID
                               name:
                                 type: string
-                                description: 部屋名
+                                description: 施設名
                               price:
                                 type: string
                                 description: 利用単価
@@ -290,7 +290,7 @@ paths:
                         - tel
                         - access
                         - parking
-                        - rooms
+                        - facilities
                 required:
                   - result_count
                   - search_condition
@@ -310,7 +310,7 @@ paths:
                         parking: '駐車場有り　1,500円（税込み）　先着順'
                         url: 'https://sample.com'
                         google_map_url: 'https://www.google.co.jp/maps/'
-                        rooms:
+                        facilities:
                           - id: 1
                             name: 会議室A
                             price: 200
@@ -360,16 +360,16 @@ paths:
           name: station_name
           description: 駅名
       description: ホテル一覧API
-  '/room/availabilities/{id}':
+  '/facility/availabilities/{id}':
     parameters:
       - schema:
           type: string
         name: id
         in: path
         required: true
-        description: 部屋ID
+        description: 施設ID
     get:
-      summary: 部屋利用可能情報API
+      summary: 施設利用可能情報API
       tags:
         - ホテル関連
       responses:
@@ -382,7 +382,7 @@ paths:
                 properties:
                   name:
                     type: string
-                    description: 部屋名
+                    description: 施設名
                   price:
                     type: number
                     description: 単価
@@ -465,8 +465,8 @@ paths:
             application/json:
               schema:
                 $ref: ../models/error.v1.yaml
-      operationId: get-room-availabilities-id
-      description: 部屋利用可能情報API
+      operationId: get-facility-availabilities-id
+      description: 施設利用可能情報API
       security:
         - bearerAuth: []
       parameters:
@@ -517,7 +517,7 @@ paths:
             schema:
               type: object
               properties:
-                room_id:
+                facility_id:
                   type: number
                 date:
                   type: string
@@ -706,7 +706,7 @@ paths:
                           $ref: ../models/hotelmodel.v1.yaml
                         name:
                           type: string
-                          description: 部屋名
+                          description: 施設名
                         price:
                           type: string
                           description: 単価
@@ -813,7 +813,7 @@ paths:
                           $ref: ../models/hotelmodel.v1.yaml
                         name:
                           type: string
-                          description: 部屋名
+                          description: 施設名
                         price:
                           type: string
                           description: 単価
