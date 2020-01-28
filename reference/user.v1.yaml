@@ -364,6 +364,77 @@ paths:
           name: keyword
           description: キーワード
       description: ホテル一覧API
+  /hotels/qr:
+    get:
+      summary: QRコードからホテル情報取得
+      tags:
+        - ホテル関連
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: ホテルID
+                  name:
+                    type: string
+                    description: ホテル名
+                  address:
+                    type: string
+                    description: 住所
+                  tel:
+                    type: string
+                    description: 電話番号
+                  access:
+                    type: string
+                    description: 交通アクセス
+                  parking:
+                    type: string
+                    description: 駐車場情報
+                  url:
+                    type: string
+                    description: ホテルURL
+                  google_map_url:
+                    type: string
+                    description: GoogleマップURL
+              examples:
+                example:
+                  value:
+                    id: 1
+                    name: ホテルA
+                    address: 東京都品川区xxxx
+                    tel: 03-0000-1111
+                    access: ＪＲ線品川駅（高輪口）より徒歩２分
+                    parking: '駐車場有り　1,500円（税込み）　先着順'
+                    url: 'https://sample.com'
+                    google_map_url: 'https://www.google.co.jp/maps/'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: get-hotel-qr
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: hash
+          description: ホテルハッシュ値
+          required: true
+      description: QRコードからホテル情報取得API
   '/facility/availabilities/{id}':
     parameters:
       - schema:
