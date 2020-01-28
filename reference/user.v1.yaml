@@ -390,6 +390,9 @@ paths:
                   price:
                     type: number
                     description: 単価
+                  capacity:
+                    type: number
+                    description: 座席数
                   equipment:
                     type: string
                     description: 設備
@@ -427,6 +430,7 @@ paths:
                   value:
                     name: 会議室A
                     price: 200
+                    capacity: 20
                     equipment: 'インターネット接続無料（有線・無線） / コンセント / プリンター '
                     hotel:
                       id: 100
