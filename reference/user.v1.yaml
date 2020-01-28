@@ -361,8 +361,8 @@ paths:
         - schema:
             type: string
           in: query
-          name: station_name
-          description: 駅名
+          name: keyword
+          description: キーワード
       description: ホテル一覧API
   '/facility/availabilities/{id}':
     parameters:
