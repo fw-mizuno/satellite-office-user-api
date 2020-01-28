@@ -1007,6 +1007,89 @@ paths:
                   type: number
                 end_time:
                   type: string
+  '/hotels/{id}/facilities':
+    get:
+      summary: 施設一覧
+      tags:
+        - ホテル関連
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  facilities:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: 施設ID
+                        name:
+                          type: string
+                          description: 施設名
+                        price:
+                          type: string
+                          description: 利用単価
+                        capacity:
+                          type: number
+                          description: 座席数
+                        availability_count:
+                          type: number
+                          description: 残席数
+                        sold_out:
+                          type: boolean
+                          description: 満席かどうか
+                        image_url:
+                          type: string
+                          description: 画像URL
+                      required:
+                        - id
+                        - name
+                        - price
+                        - capacity
+                        - availability_count
+                        - sold_out
+                required:
+                  - facilities
+              examples:
+                example:
+                  value:
+                    facilities:
+                      - id: 1
+                        name: 会議室A
+                        price: 200
+                        capacity: 20
+                        availability_count: 10
+                        sold_out: false
+                        image_url: 'http://placehold.it/300x300'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: get-hotel-facilities
+      security:
+        - bearerAuth: []
+      parameters: []
+      description: 施設一覧API
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ホテルID
 components:
   schemas: {}
   securitySchemes:
