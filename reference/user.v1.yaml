@@ -277,6 +277,9 @@ paths:
                               capacity:
                                 type: number
                                 description: 座席数
+                              availability_count:
+                                type: number
+                                description: 残席数
                               sold_out:
                                 type: boolean
                                 description: 満席かどうか
@@ -315,7 +318,8 @@ paths:
                             name: 会議室A
                             price: 200
                             capacity: 20
-                            sold_out: true
+                            availability_count: 10
+                            sold_out: false
                             image_url: 'http://placehold.it/300x300'
         '400':
           description: Bad Request
@@ -788,6 +792,7 @@ paths:
       description: 予約一覧API
       security:
         - bearerAuth: []
+      parameters: []
   /histories:
     get:
       summary: 実績一覧
