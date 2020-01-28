@@ -425,16 +425,18 @@ paths:
               examples:
                 example:
                   value:
-                    hotel_id: 100
-                    hotel_name: ホテルA
                     name: 会議室A
-                    address: 東京都品川区xxxx
-                    tel: 03-0000-1111
-                    access: ＪＲ線品川駅（高輪口）より徒歩２分
-                    parking: '駐車場有り　1,500円（税込み）　先着順'
-                    url: 'https://sample.com'
-                    google_map_url: 'https://www.google.co.jp/maps/'
+                    price: 200
                     equipment: 'インターネット接続無料（有線・無線） / コンセント / プリンター '
+                    hotel:
+                      id: 100
+                      name: ホテルA
+                      address: 東京都品川区xxxx
+                      tel: 03-0000-1111
+                      access: ＪＲ線品川駅（高輪口）より徒歩２分
+                      parking: '駐車場有り　1,500円（税込み）　先着順'
+                      url: 'https://sample.com'
+                      google_map_url: 'https://www.google.co.jp/maps/'
                     time_table:
                       - time: '10:30'
                         availability_count: 0
