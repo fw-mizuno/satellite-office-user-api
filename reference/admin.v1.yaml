@@ -13,7 +13,7 @@ servers:
   - url: 'https://{本番ドメイン}/admin/api/v1'
     description: Production
 paths:
-  '/login':
+  /login:
     post:
       summary: ログイン
       responses:
@@ -480,7 +480,7 @@ paths:
         ホテル権限のユーザーは自身のホテル配下の施設以外は閲覧禁止
       security:
         - bearerAuth: []
-  '/facilities/add':
+  /facilities/add:
     post:
       summary: 施設追加・編集
       tags:
@@ -950,7 +950,7 @@ paths:
         in: path
         required: true
         description: 予約ID
-  '/histories':
+  /histories:
     get:
       summary: 実績一覧
       tags:
@@ -1035,6 +1035,46 @@ paths:
           name: date
           description: 年月
           required: true
+  /change_password:
+    post:
+      summary: パスワード変更
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: ../models/error.v1.yaml
+      operationId: post-change_password
+      description: パスワード変更を行う。
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  description: 旧パスワード
+                new_password:
+                  type: string
+                  description: 新パスワード
+              required:
+                - old_password
+                - new_password
+        description: ''
+      tags:
+        - 認証
 components:
   schemas: {}
   securitySchemes:
