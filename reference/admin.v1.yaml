@@ -804,9 +804,6 @@ paths:
                     items:
                       type: object
                       properties:
-                        id:
-                          type: number
-                          description: 予約ID
                         date:
                           type: string
                           description: 日付
@@ -831,7 +828,9 @@ paths:
                         check_out_date:
                           type: string
                           description: 終了時間
-                        
+                        id:
+                          type: number
+                          description: 予約ID
               examples:
                 example:
                   value:
@@ -844,14 +843,14 @@ paths:
                       - date: 2019/12/1
                         reservations:
                           - id: 1
-                            date: '2019/12/1'
+                            date: 2019/12/1
                             company_name: テスト株式会社
                             department_name: A管理会社
                             user_name: スズキイチロウ
-                            reservation_start_date: 10:00
-                            reservation_end_date: 12:00
-                            check_in_date: 10:00
-                            check_out_date: 12:00
+                            reservation_start_date: '10:00'
+                            reservation_end_date: '12:00'
+                            check_in_date: '10:00'
+                            check_out_date: '12:00'
           description: OK
       operationId: get-hotel-facilities-id-reservations
       description: 予約一覧取得API
@@ -864,6 +863,54 @@ paths:
           name: date
           description: 年月
           required: true
+  '/reservations/check_out/{id}':
+    post:
+      summary: チェックアウト代行
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+      operationId: post-reservations-check_out
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                check_out_time:
+                  type: string
+                  description: チェックアウト時刻
+        description: ''
+      security:
+        - bearerAuth: []
+      description: チェックアウト代行
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 予約ID
+  '/reservations/cancel/{id}':
+    get:
+      summary: 予約キャンセル
+      tags:
+        - 予約
+      responses:
+        '200':
+          description: OK
+      operationId: post-reservations-cancel
+      security:
+        - bearerAuth: []
+      description: 予約キャンセル
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 予約ID
 components:
   schemas: {}
   securitySchemes:
@@ -879,3 +926,5 @@ tags:
     description: ホテルAPI
   - name: 施設
     description: 施設API
+  - name: 予約
+    description: 予約API
