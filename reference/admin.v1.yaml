@@ -804,6 +804,9 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: number
+                          description: 予約ID
                         date:
                           type: string
                           description: 日付
@@ -840,7 +843,8 @@ paths:
                     reservations:
                       - date: 2019/12/1
                         reservations:
-                          - date: '2019/12/1'
+                          - id: 1
+                            date: '2019/12/1'
                             company_name: テスト株式会社
                             department_name: A管理会社
                             user_name: スズキイチロウ
