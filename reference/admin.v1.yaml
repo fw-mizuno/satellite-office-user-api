@@ -13,7 +13,7 @@ servers:
   - url: 'https://{本番ドメイン}/admin/api/v1'
     description: Production
 paths:
-  /login:
+  '/login':
     post:
       summary: ログイン
       responses:
@@ -86,7 +86,7 @@ paths:
         - 認証
         - 共通
     parameters: []
-  /hotel/info:
+  '/hotels/{id}':
     get:
       summary: ホテル情報
       tags:
@@ -162,10 +162,19 @@ paths:
                     parking: '有り　1,500円（税込み）　先着順'
                     status: 1
       operationId: get-hotel-info
-      description: ホテル情報取得API
+      description: |
+        ホテル情報取得API
+        ホテル権限のユーザーは自身のホテル以外の参照は禁止
       security:
         - bearerAuth: []
-  /hotel/edit:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ホテルID
+  '/hotels/{id}/edit':
     post:
       summary: ホテル情報編集
       tags:
@@ -174,7 +183,9 @@ paths:
         '200':
           description: OK
       operationId: get-hotel-edit
-      description: ホテル情報編集API
+      description: |-
+        ホテル情報編集API
+        ホテルユーザーは自身のホテル以外編集禁止
       security:
         - bearerAuth: []
       requestBody:
@@ -216,9 +227,16 @@ paths:
                 - address
                 - name_kana
                 - name
-  /hotel/facilities:
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ホテルID
+  '/hotels/{id}/facilities':
     get:
-      summary: 施設一覧
+      summary: ホテル内施設一覧
       tags:
         - 施設
       responses:
@@ -322,8 +340,17 @@ paths:
       operationId: get-hotel-facilities
       security:
         - bearerAuth: []
-      description: 施設一覧取得API
-  '/hotel/facilities/{id}':
+      description: |-
+        施設一覧取得API
+        ホテル権限の場合は自身のホテル以外の情報は参照禁止
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ホテルID
+  '/facilities/{id}':
     parameters:
       - schema:
           type: string
@@ -448,10 +475,12 @@ paths:
                     reservation_start_date: 10
                     equipment: インターネット接続無料（有線・無線） / コンセント / プリンター / ロッカー / 自動販売機 / 喫煙所
       operationId: get-hotel-facilities-id
-      description: 施設詳細API
+      description: |-
+        施設詳細API
+        ホテル権限のユーザーは自身のホテル配下の施設以外は閲覧禁止
       security:
         - bearerAuth: []
-  /hotel/facilities/add:
+  '/facilities/add':
     post:
       summary: 施設追加・編集
       tags:
@@ -467,10 +496,13 @@ paths:
               type: object
               properties:
                 id:
-                  type: string
+                  type: number
                   description: |-
                     施設ID
                     なければ新規・あれば編集
+                hotel_id:
+                  type: number
+                  description: ホテルID
                 name:
                   type: string
                   description: 施設名
@@ -537,6 +569,8 @@ paths:
                   type: number
                   description: 表示順
               required:
+                - id
+                - hotel_id
                 - name
                 - capacity
                 - price
@@ -554,7 +588,8 @@ paths:
       description: |-
         施設追加・編集API
         IDがあれば編集、なければ新規
-  '/hotel/facilities/{id}/open_days':
+    parameters: []
+  '/facilities/{id}/open_days':
     parameters:
       - schema:
           type: string
@@ -603,7 +638,9 @@ paths:
                       - date: 2019/12/20
                         price: 400
       operationId: get-hotel-facilities-id-open_days
-      description: 開放日一覧取得API
+      description: |-
+        開放日一覧取得API
+        ホテル権限のユーザーは自身のホテル配下の施設以外は閲覧禁止
       security:
         - bearerAuth: []
       parameters:
@@ -623,7 +660,9 @@ paths:
       operationId: post-hotel-facilities-id-open_days
       security:
         - bearerAuth: []
-      description: 開放日登録API
+      description: |-
+        開放日登録API
+        ホテル権限のユーザーは自身のホテル配下の施設以外は編集禁止
       requestBody:
         content:
           application/json:
@@ -646,7 +685,7 @@ paths:
                       - price
               required:
                 - open_days
-  '/hotel/facilities/{id}/reservation_days':
+  '/facilities/{id}/reservation_days':
     parameters:
       - schema:
           type: string
@@ -765,7 +804,7 @@ paths:
           name: date
           description: 年月
           required: true
-  '/hotel/facilities/{id}/reservations':
+  '/facilities/{id}/reservations':
     parameters:
       - schema:
           type: string
@@ -774,7 +813,7 @@ paths:
         required: true
         description: 施設ID
     get:
-      summary: 予約一覧
+      summary: 予約一覧()
       tags:
         - 施設
       responses:
@@ -911,6 +950,91 @@ paths:
         in: path
         required: true
         description: 予約ID
+  '/histories':
+    get:
+      summary: 実績一覧
+      tags:
+        - 予約
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: number
+                    description: 年月
+                  total_time:
+                    type: string
+                    description: 精算時間
+                  total_amount:
+                    type: number
+                    description: 合計金額
+                  histories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: 予約ID
+                        date:
+                          type: string
+                          description: 日付
+                        company_name:
+                          type: string
+                          description: 会社名
+                        department_name:
+                          type: string
+                          description: 支社名
+                        user_name:
+                          type: string
+                          description: ユーザー名
+                        facility_name:
+                          type: string
+                          description: 利用施設名
+                        price:
+                          type: number
+                          description: 単価
+                        usage_time:
+                          type: string
+                          description: 利用時間
+                        billing_amount:
+                          type: number
+                          description: 支払額
+              examples:
+                example:
+                  value:
+                    id: 1
+                    name: 会議室A
+                    capacity: 20
+                    availability_count: 10
+                    date: 2019/12
+                    total_amount: 3000
+                    total_time: 10時間00分
+                    histories:
+                      - id: 1
+                        date: 2019/12/1
+                        company_name: テスト株式会社
+                        department_name: A管理会社
+                        user_name: スズキイチロウ
+                        facility_name: 会議室
+                        price: 200
+                        usage_time: 2時間00分
+                        billing_amount: 1440
+          description: OK
+      operationId: get-histories
+      description: 実績一覧取得API
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: date
+          description: 年月
+          required: true
 components:
   schemas: {}
   securitySchemes:
