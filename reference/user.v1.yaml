@@ -471,6 +471,9 @@ paths:
                   equipment:
                     type: string
                     description: 設備
+                  image_url:
+                    type: string
+                    description: 画像URL
                   hotel:
                     $ref: ../models/hotelmodel.v1.yaml
                   time_table:
@@ -507,6 +510,7 @@ paths:
                     price: 200
                     capacity: 20
                     equipment: 'インターネット接続無料（有線・無線） / コンセント / プリンター '
+                    image_url: 'http://placehold.it/300x300'
                     hotel:
                       id: 100
                       name: ホテルA
