@@ -254,6 +254,9 @@ paths:
                         parking:
                           type: string
                           description: 駐車場情報
+                        business_hour:
+                          type: string
+                          description: 営業時間
                         url:
                           type: string
                           description: ホテルURL
@@ -311,6 +314,7 @@ paths:
                         tel: 03-0000-1111
                         access: ＪＲ線品川駅（高輪口）より徒歩２分
                         parking: '駐車場有り　1,500円（税込み）　先着順'
+                        business_hour: 10:00~22:00
                         url: 'https://sample.com'
                         google_map_url: 'https://www.google.co.jp/maps/'
                         facilities:
