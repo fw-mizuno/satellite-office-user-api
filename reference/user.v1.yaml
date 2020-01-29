@@ -717,8 +717,12 @@ paths:
                 reserve_id:
                   type: string
                   description: 予約ID
+                date:
+                  type: string
+                  description: 'チェックイン日時 YYYY/MM/DD HH:mm'
               required:
                 - reserve_id
+                - date
     parameters: []
   /reservations/check_out:
     post:
@@ -753,8 +757,12 @@ paths:
                 reserve_id:
                   type: string
                   description: 予約ID
+                date:
+                  type: string
+                  description: 'チェックアウト日時 YYYY/MM/DD HH:mm'
               required:
                 - reserve_id
+                - date
     parameters: []
   /reservations:
     get:
