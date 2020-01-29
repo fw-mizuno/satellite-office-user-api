@@ -1,19 +1,19 @@
 openapi: 3.0.0
 info:
-  title: hotel
+  title: admin
   version: '1.0'
   contact:
     name: masashi mizuno
   description: |-
-    Hotel向けAPI
+    admin(管理者・企業・ホテル)向けAPI
     認証はCognitoが発行したJWT Tokenを利用する
 servers:
   - url: 'https://satellite-office-app.herokuapp.com'
     description: Mock
-  - url: 'https://{本番ドメイン}/hotel/api/v1'
+  - url: 'https://{本番ドメイン}/admin/api/v1'
     description: Production
 paths:
-  /hotel/login:
+  /login:
     post:
       summary: ログイン
       responses:
@@ -24,11 +24,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  hotel_id:
+                  id:
                     type: number
                     description: ログインしたユーザーのID
                     example: 100
-                  hotel_name:
+                  name:
                     type: string
                     description: ユーザー名
                     example: 鈴木太郎
@@ -37,16 +37,21 @@ paths:
                     description: アクセストークン
                     format: string
                     example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Aij4w
+                  role:
+                    type: number
+                    description: 'ユーザーロール 0:管理者, 1:企業, 2:ホテル '
                 required:
-                  - hotel_id
-                  - hotel_name
+                  - id
+                  - name
                   - token
+                  - role
               examples:
                 Example:
                   value:
-                    hotel_id: 1
-                    hotel_name: ホテルA
+                    id: 1
+                    name: ホテルA
                     token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuWxseeUsCIsImV4cCI6IjIwMTkvMDQvMDEifQ.u8TT4ySJhBiMod1rNqCxiISXwCXqddVSJE5gncSCGD7RPHigHoZiDnLfwcIIGij-ARBrswe4eluMUgaQwS7FUdN8IVwKkFUY1533TQZZYhTUzobO3q_PnDyPi8cPDmkSTJHzBhT298G7fNZENUUo8fmCjOkYC9FibTMrF6Ai
+                    role: 2
         '400':
           description: Bad Request
           content:
@@ -67,18 +72,19 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                id:
                   type: string
                   description: 登録メールアドレス
                 password:
                   type: string
                   description: ログインパスワード
               required:
-                - email
+                - id
                 - password
         description: ''
       tags:
         - 認証
+        - 共通
     parameters: []
   /hotel/info:
     get:
@@ -600,7 +606,6 @@ paths:
       description: 開放日一覧取得API
       security:
         - bearerAuth: []
-      requestBody: {}
       parameters:
         - schema:
             type: string
@@ -641,6 +646,220 @@ paths:
                       - price
               required:
                 - open_days
+  '/hotel/facilities/{id}/reservation_days':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 施設ID
+    get:
+      summary: 予約日一覧
+      tags:
+        - 施設
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: 施設ID
+                  capacity:
+                    type: number
+                    description: 席数
+                  name:
+                    type: string
+                    description: 施設名
+                  availability_count:
+                    type: number
+                    description: 残席数
+                  date:
+                    type: string
+                    description: 表示年月
+                  reservation_days:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          description: 日付
+                        reservations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              hour:
+                                type: string
+                                description: 時
+                              hours:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    section:
+                                      type: number
+                                      description: 1~4の時間内セクション
+                                    reservation_count:
+                                      type: number
+                                      description: 予約数
+                                  required:
+                                    - section
+                                    - reservation_count
+                            required:
+                              - hour
+                              - hours
+                      required:
+                        - date
+                required:
+                  - id
+                  - capacity
+                  - name
+                  - availability_count
+                  - date
+                  - reservation_days
+              examples:
+                example:
+                  value:
+                    id: 1
+                    name: 会議室A
+                    capacity: 20
+                    availability_count: 10
+                    date: 2019/12
+                    reservation_days:
+                      - date: 2019/12/1
+                        reservations:
+                          - hour: '9:00'
+                            hours:
+                              - section: 1
+                                reservation_count: 3
+                              - section: 2
+                                reservation_count: 3
+                              - section: 3
+                                reservation_count: 3
+                              - section: 4
+                                reservation_count: 3
+                          - hour: '10:00'
+                            hours:
+                              - section: 1
+                                reservation_count: 3
+                              - section: 2
+                                reservation_count: 3
+                              - section: 3
+                                reservation_count: 3
+                              - section: 4
+                                reservation_count: 3
+          description: OK
+      operationId: get-hotel-facilities-id-reservation_days
+      description: 予約日一覧取得API
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: date
+          description: 年月
+          required: true
+  '/hotel/facilities/{id}/reservations':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 施設ID
+    get:
+      summary: 予約一覧
+      tags:
+        - 施設
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: 施設ID
+                  capacity:
+                    type: number
+                    description: 席数
+                  name:
+                    type: string
+                    description: 施設名
+                  availability_count:
+                    type: number
+                    description: 残席数
+                  date:
+                    type: string
+                    description: 表示年月
+                  reservations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        date:
+                          type: string
+                          description: 日付
+                        company_name:
+                          type: string
+                          description: 会社名
+                        department_name:
+                          type: string
+                          description: 支社名
+                        user_name:
+                          type: string
+                          description: ユーザー名
+                        reservation_start_date:
+                          type: string
+                          description: 予約開始時間
+                        reservation_end_date:
+                          type: string
+                          description: 予約終了時間
+                        check_in_date:
+                          type: string
+                          description: 開始時間
+                        check_out_date:
+                          type: string
+                          description: 終了時間
+                        
+              examples:
+                example:
+                  value:
+                    id: 1
+                    name: 会議室A
+                    capacity: 20
+                    availability_count: 10
+                    date: 2019/12
+                    reservations:
+                      - date: 2019/12/1
+                        reservations:
+                          - date: '2019/12/1'
+                            company_name: テスト株式会社
+                            department_name: A管理会社
+                            user_name: スズキイチロウ
+                            reservation_start_date: 10:00
+                            reservation_end_date: 12:00
+                            check_in_date: 10:00
+                            check_out_date: 12:00
+          description: OK
+      operationId: get-hotel-facilities-id-reservations
+      description: 予約一覧取得API
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: date
+          description: 年月
+          required: true
 components:
   schemas: {}
   securitySchemes:
@@ -648,6 +867,8 @@ components:
       type: http
       scheme: Bearer
 tags:
+  - name: 共通
+    description: 共通処理
   - name: 認証
     description: ログインに関わるAPI
   - name: ホテル
