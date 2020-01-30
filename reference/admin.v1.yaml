@@ -1337,6 +1337,8 @@ paths:
           description: OK
       tags:
         - ユーザー
+      security:
+        - bearerAuth: []
   '/users/{id}/change_status':
     parameters:
       - schema:
