@@ -1035,6 +1035,16 @@ paths:
           name: date
           description: 年月
           required: true
+        - schema:
+            type: string
+          in: query
+          name: hotel_id
+          description: ホテルID
+        - schema:
+            type: string
+          in: query
+          name: company_id
+          description: 企業ID
   /change_password:
     post:
       summary: パスワード変更
@@ -1075,6 +1085,334 @@ paths:
         description: ''
       tags:
         - 認証
+  '/company/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 企業ID
+    get:
+      summary: 企業詳細
+      tags:
+        - 企業
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: 企業ID
+                  name:
+                    type: string
+                    description: 企業名
+                  name_kana:
+                    type: string
+                    description: 企業名カナ
+                  address:
+                    type: string
+                    description: 住所
+                  tel:
+                    type: string
+                    description: 電話番号
+                  contract_number:
+                    type: string
+                    description: 契約番号
+                  status:
+                    type: number
+                    description: '0: 停止 1: 利用可能'
+                  mail_domain:
+                    type: string
+                    description: メールアドレスドメイン
+                  upper_price:
+                    type: number
+                    description: 上限単価
+                  is_employee_id:
+                    type: boolean
+                    description: 社員番号必須有無
+                  is_set_group:
+                    type: boolean
+                    description: グループ入力必須有無
+              examples:
+                example:
+                  value:
+                    id: 1
+                    name: ホテルA
+                    name_kana: ホテルエー
+                    address: 愛知県名古屋市中区
+                    tel: 052-111-1111
+                    contract_number: 123456
+                    status: 1
+                    is_employee_id: true
+                    is_set_group: true
+                    mail_domain: sample.com
+                    upper_price: 1000
+      operationId: get-company-id
+      description: |-
+        施設詳細API
+        企業権限のユーザーは自身の企業以外は閲覧禁止
+      security:
+        - bearerAuth: []
+  '/company/{id}/edit':
+    post:
+      summary: 企業情報編集
+      tags:
+        - 企業
+      responses:
+        '200':
+          description: OK
+      operationId: get-company-edit
+      description: |-
+        企業情報編集API
+        企業ユーザーは自身の企業以外編集禁止
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 企業名
+                name_kana:
+                  type: string
+                  description: 企業名カナ
+                address:
+                  type: string
+                  description: 住所
+                tel:
+                  type: string
+                  description: 電話番号
+                is_set_group:
+                  type: boolean
+                  description: グループ入力必須有無
+                is_employee_id:
+                  type: boolean
+                  description: 社員番号必須有無
+                upper_price:
+                  type: number
+                  description: 上限単価
+                mail_domain:
+                  type: string
+                  description: メールアドレスドメイン
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 企業ID
+  '/company/{id}/users':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: 企業ID
+    get:
+      summary: ユーザー一覧
+      tags:
+        - ユーザー
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: ユーザーID
+                        name:
+                          type: string
+                          description: ユーザー名
+                        name_kana:
+                          type: string
+                          description: ユーザー名カナ
+                        employee_id:
+                          type: string
+                          description: 社員ID
+                        group_name:
+                          type: string
+                          description: グループ名
+                        status:
+                          type: number
+                          description: '0: 停止 1: 利用可能'
+                        mail_address:
+                          type: string
+                          description: メールアドレス
+              examples:
+                example:
+                  value:
+                    users:
+                      - id: 1
+                        name: 鈴木一郎
+                        name_kana: スズキイチロウ
+                        employee_id: 12345
+                        group_name: グループA
+                        status: 1
+                        mail_address: test@sample.com
+      operationId: get-users
+      description: |-
+        ユーザー一覧API
+        企業権限のユーザーは自身の企業所属ユーザー以外は閲覧禁止
+      security:
+        - bearerAuth: []
+  '/users/{id}':
+    get:
+      summary: ユーザー詳細
+      tags:
+        - ユーザー
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mail_address:
+                    type: string
+                    description: メールアドレス
+                  status:
+                    type: number
+                    description: '0: 停止 1: 利用可能'
+                  group_name:
+                    type: string
+                    description: グループ名
+                  employee_id:
+                    type: string
+                    description: 社員ID
+                  name_kana:
+                    type: string
+                    description: ユーザー名カナ
+                  name:
+                    type: string
+                    description: ユーザー名
+                  id:
+                    type: string
+                    description: ユーザーID
+              examples:
+                example:
+                  value:
+                    mail_address: test@sample.com
+                    status: 1
+                    group_name: グループA
+                    employee_id: 12345
+                    name_kana: スズキイチロウ
+                    name: 鈴木一郎
+                    id: 1
+      operationId: get-users-id
+      description: |-
+        ユーザー詳細API
+        企業権限のユーザーは自身の企業所属ユーザー以外は閲覧禁止
+      security:
+        - bearerAuth: []
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ユーザーID
+    delete:
+      summary: ユーザー削除
+      operationId: delete-users-id
+      responses:
+        '200':
+          description: OK
+      tags:
+        - ユーザー
+  '/users/{id}/change_status':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+        description: ユーザーID
+    post:
+      summary: ユーザーステータス編集
+      tags:
+        - ユーザー
+      responses:
+        '200':
+          description: OK
+      operationId: post-users-status
+      description: |-
+        ユーザーステータス編集API
+        企業権限のユーザーは自身の企業所属ユーザー以外は編集禁止
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: number
+                  description: 'ユーザーID 0: 停止 1: 利用可能'
+              required:
+                - status
+        description: ''
+  /users/add:
+    post:
+      summary: ユーザー登録
+      tags:
+        - ユーザー
+      responses:
+        '200':
+          description: OK
+      operationId: post-users
+      description: ユーザー登録API
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group_name:
+                  type: string
+                  description: グループ名
+                employee_id:
+                  type: string
+                  description: 社員ID
+                name_kana:
+                  type: string
+                  description: ユーザー名カナ
+                name:
+                  type: string
+                  description: ユーザー名
+                company_id:
+                  type: string
+                  description: 企業ID
+                contact_address:
+                  type: string
+                  description: 連絡先
+                mail_address:
+                  type: string
+                  description: メールアドレス
+                password:
+                  type: string
+                  description: パスワード
+        description: ''
 components:
   schemas: {}
   securitySchemes:
@@ -1092,3 +1430,7 @@ tags:
     description: 施設API
   - name: 予約
     description: 予約API
+  - name: 企業
+    description: 企業API
+  - name: ユーザー
+    description: ユーザーAPI
