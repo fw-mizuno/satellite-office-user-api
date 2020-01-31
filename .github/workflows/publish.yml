@@ -22,7 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install, publish
       run: |
-        npm i @stoplight/cli
+        npm i -g @stoplight/cli
         stoplight publish --token 2XyfAMrDJHEknBn898 --url https://stoplight.io/api
       env:
         CI: true
