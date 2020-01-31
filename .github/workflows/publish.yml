@@ -22,11 +22,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install, publish
       run: |
-        mkdir ~/.npm-global
-        npm config set prefix '~/.npm-global'
-        echo ' export PATH=~/.npm-global/bin:$PATH' >> ~/.bash_profile
-        source ~/.bash_profile
-        npm i -g @stoplight/cli
-        stoplight publish --token 2XyfAMrDJHEknBn898 --url https://stoplight.io/api
+        npm i @stoplight/cli
+        node_modules/@stoplight/cli/bin/stoplight.js publish --token 2XyfAMrDJHEknBn898 --url https://stoplight.io/api
       env:
         CI: true
