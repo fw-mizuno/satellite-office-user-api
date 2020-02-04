@@ -11,6 +11,7 @@
     "serve": "prism mock ./reference/user.v1.yaml -h 0.0.0.0"
   },
   "dependencies": {
-    "@stoplight/prism-cli": "^3.2.1"
+    "@stoplight/prism-cli": "^3.2.1",
+    "@stoplight/cli": "^2.0.1"
   }
 }
