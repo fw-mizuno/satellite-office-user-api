@@ -23,6 +23,8 @@ jobs:
     - name: npm install, publish
       run: |
         npm install
-        ./.node_modules/@stoplight/cli publish --token 2XyfAMrDJHEknBn898 --url https://stoplight.io/api
+        ls -la
+        pwd
+        .node_modules/@stoplight/cli publish --token 2XyfAMrDJHEknBn898 --url https://stoplight.io/api
       env:
         CI: true
